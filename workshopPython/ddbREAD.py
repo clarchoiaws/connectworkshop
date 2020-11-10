@@ -7,14 +7,15 @@ def lambda_handler(event, context):
     CallerID = event['Details']['Parameters']['CallerID']
 
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table('CustomerTable')
+    table = dynamodb.Table('AmazonConnectLab1001Table')
 
     response = table.get_item(
             Key = { 'CallerID': CallerID }
         )
 
     if 'Item' in response:
-        response['Item']['lambdaresults'] = 1
+        response['Item']['recordFound'] = "True"
+        response['Item']['lambdaResult'] = "Success"
         return response['Item']
     else:
-        return { "lambdaresults" : 0}
+        return { "lambdaResult" : "Error"}
